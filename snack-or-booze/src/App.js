@@ -7,18 +7,50 @@ import NavBar from "./NavBar";
 import { Route, Switch } from "react-router-dom";
 import Menu from "./FoodMenu";
 import Snack from "./FoodItem";
+import DrinksMenu from "./DrinksMenu";
+import Drink from "./Drink";
+import Cart from "./Cart";
+import { cartItems, removeFromCart } from "./Cart";
+import { v4 as uuid } from "uuid";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [snacks, setSnacks] = useState([]);
+  const [drinks, setDrinks] = useState([]);
+    const [cart, setCart] = useState([]);
+   
+ 
+      const addToCart = (el) => {
+        let newItem = { el, id: uuid() };
+      setCart([...cart, newItem]);
+  };
 
+console.log(cart)
+  // const cartItems = cart.map((el) => (
+  //   <div key={el.id}>
+  //     {`${el.name}`}
+  //     <input type="submit" value="remove" onClick={() => removeFromCart(el)} />
+  //   </div>
+  // ));
+
+  const removeFromCart = (el) => {
+    let hardCopy = [...cart];
+    hardCopy = hardCopy.filter((cartItem) => cartItem.id !== el.id);
+    setCart(hardCopy);
+  };
   useEffect(() => {
     async function getSnacks() {
       let snacks = await SnackOrBoozeApi.getSnacks();
       setSnacks(snacks);
       setIsLoading(false);
     }
+    async function getDrinks() {
+      let drinks = await SnackOrBoozeApi.getDrinks();
+      setDrinks(drinks);
+      setIsLoading(false);
+    }
     getSnacks();
+    getDrinks();
   }, []);
 
   if (isLoading) {
@@ -38,8 +70,20 @@ function App() {
               <Menu snacks={snacks} title="Snacks" />
             </Route>
             <Route path="/snacks/:id">
-              <Snack items={snacks} cantFind="/snacks" />
+              <Snack items={snacks} addToCart={addToCart} cantFind="/snacks" />
             </Route>
+            <Route exact path="/">
+              <Home drinks={drinks} />
+            </Route>
+            <Route exact path="/drinks">
+              <DrinksMenu drinks={drinks} title="drinks" />
+            </Route>
+            <Route path="/drinks/:id">
+              <Drink items={drinks}  addToCart={addToCart} cantFind="/drinks" />
+            </Route>
+           <Route path="/cart">
+             <Cart cart={cart} removeFromCart={removeFromCart}/>
+             </Route>
             <Route>
               <p>Hmmm. I can't seem to find what you want.</p>
             </Route>

@@ -1,8 +1,8 @@
 import React from "react";
 import { Redirect, useParams } from "react-router-dom";
-import { Card, CardBody, CardTitle, CardText } from "reactstrap";
+import { Card, CardBody, CardTitle, CardText, Button } from "reactstrap";
 
-function FoodItem({ items, cantFind }) {
+function FoodItem({ items, addToCart, cantFind }) {
   const { id } = useParams();
 
   let snack = items.find(snack => snack.id === id);
@@ -22,6 +22,7 @@ function FoodItem({ items, cantFind }) {
           <p>
             <b>Serve:</b> {snack.serve}
           </p>
+          <Button onClick={()=>addToCart(snack.name)}>Add to Cart</Button>
         </CardBody>
       </Card>
     </section>
