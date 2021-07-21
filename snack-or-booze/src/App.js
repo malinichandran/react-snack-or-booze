@@ -17,21 +17,13 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [snacks, setSnacks] = useState([]);
   const [drinks, setDrinks] = useState([]);
-    const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState([]);
    
  
-      const addToCart = (el) => {
+  const addToCart = (el) => {
         let newItem = { el, id: uuid() };
       setCart([...cart, newItem]);
   };
-
-console.log(cart)
-  // const cartItems = cart.map((el) => (
-  //   <div key={el.id}>
-  //     {`${el.name}`}
-  //     <input type="submit" value="remove" onClick={() => removeFromCart(el)} />
-  //   </div>
-  // ));
 
   const removeFromCart = (el) => {
     let hardCopy = [...cart];

@@ -11,7 +11,7 @@ import {
 
 const Cart = ({cart, removeFromCart}) => {
   
-console.log(cart);
+
 return(
     <section className="col-md-4">
     
